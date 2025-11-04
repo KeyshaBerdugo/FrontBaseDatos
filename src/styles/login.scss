@@ -1,0 +1,55 @@
+.login-page {
+  --background: linear-gradient(135deg, #f3e8ff, #e9d5ff); // Fondo degradado lila pastel
+
+  // Asegura que ocupe toda la pantalla
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.login-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1; // ocupa todo el espacio debajo del header
+  padding: 1rem;
+}
+
+.login-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+
+  h2 {
+    color: #4c1d95; // Morado oscuro
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #6b21a8;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.custom-input {
+  --background: #faf5ff; // Fondo input lila claro
+  --border-color: #a78bfa;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.btn-login {
+  --background: #6d28d9; // Morado intenso
+  --color: #fff;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.3s;
+
+  &:hover {
+    --background: #a78bfa; // Lila claro en hover
+  }
+}

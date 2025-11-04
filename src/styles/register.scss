@@ -1,0 +1,72 @@
+.register-page {
+  background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+  color: #2d0a4d;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  // Hace que el contenido se centre en pantalla (debajo del header)
+  .register-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1; // ocupa todo el espacio restante debajo del toolbar
+    padding: 2rem;
+  }
+
+  .register-card {
+    background-color: #ede9fe;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+
+    h2 {
+      color: #4c1d95;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #6b21a8;
+      margin-bottom: 1.5rem;
+    }
+
+    .custom-input {
+      margin-bottom: 1rem;
+
+      ion-input {
+        --background: #faf5ff;
+        --border-radius: 8px;
+        --padding-start: 12px;
+        --padding-end: 12px;
+        --border-color: #a78bfa;
+        --color: #4c1d95;
+        font-size: 1rem;
+      }
+    }
+
+    .btn-register {
+      --background: #a78bfa;
+      --color: #fff;
+      --border-radius: 8px;
+      font-weight: bold;
+      transition: 0.3s;
+
+      &:hover {
+        --background: #c4b5fd;
+      }
+    }
+  }
+
+  ion-toolbar {
+    --background: #6d28d9;
+    --color: #fff;
+    border-bottom: 2px solid #a78bfa;
+  }
+
+  ion-title {
+    font-weight: bold;
+  }
+}
