@@ -1,0 +1,40 @@
+.credits-page {
+  padding: 1rem;
+}
+
+.credit-form {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.credit-form input {
+  padding: 0.5rem;
+}
+
+.credit-form button {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+li button {
+  margin-left: 1rem;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+}

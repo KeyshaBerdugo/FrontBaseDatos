@@ -1,16 +1,8 @@
 import { useState } from "react";
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonList,
-  IonItem,
-  IonInput,
-  IonButton,
-  IonText,
-  IonToast,
+  IonPage, IonHeader, IonToolbar, IonTitle,
+  IonContent, IonList, IonItem, IonInput,
+  IonButton, IonToast
 } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
 import "../styles/register.scss";
@@ -21,15 +13,32 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Simulación de registro
-    await new Promise((r) => setTimeout(r, 600));
-    localStorage.setItem("auth_token", "demo-token");
-    setSuccess(true);
-    setTimeout(() => navigate("/login", { replace: true }), 1000);
+    try {
+      const res = await fetch(`http://localhost:8081/api/users?password=${encodeURIComponent(pwd)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          username: nombre,
+          status: "ACTIVE",
+          role: "USER"
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Error creando usuario");
+      }
+
+      setSuccess(true);
+      setTimeout(() => navigate("/login", { replace: true }), 1000);
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -80,14 +89,24 @@ export default function RegisterPage() {
               </IonItem>
 
               <div className="ion-padding">
-                <IonButton expand="block" type="submit" className="btn-register">
+                <IonButton expand="block" type="submit" className="btn-register" color="success">
                   Registrarse
+                </IonButton>
+                {/* ✅ Botón para volver a Home */}
+                <IonButton
+                  expand="block"
+                  color="medium"
+                  onClick={() => navigate("/home")}
+                  style={{ marginTop: "10px" }}
+                >
+                  Volver a Home
                 </IonButton>
               </div>
             </IonList>
           </form>
         </div>
 
+        {/* Toasts */}
         <IonToast
           isOpen={success}
           message="Registro exitoso"
@@ -95,6 +114,15 @@ export default function RegisterPage() {
           position="top"
           color="success"
           onDidDismiss={() => setSuccess(false)}
+        />
+
+        <IonToast
+          isOpen={!!error}
+          message={error}
+          duration={2000}
+          position="top"
+          color="danger"
+          onDidDismiss={() => setError("")}
         />
       </IonContent>
     </IonPage>

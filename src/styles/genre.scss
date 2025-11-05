@@ -1,0 +1,146 @@
+.genres-page {
+  background: linear-gradient(135deg, #f3e8ff, #e9d5ff); // Fondo degradado lila pastel
+  color: #2d0a4d;
+  min-height: 100vh;
+  padding: 2rem;
+
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #4c1d95;
+    margin-bottom: 1.5rem;
+  }
+
+  .genres-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #faf5ff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      background-color: #ede9fe;
+      border: 1px solid #d8b4fe;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.02);
+        background-color: #f3e8ff;
+      }
+
+      strong {
+        font-size: 1.1rem;
+        color: #4c1d95;
+      }
+
+      span {
+        color: #6b21a8;
+        font-size: 0.95rem;
+      }
+    }
+    li button {
+  background-color: #6d28d9; // Morado
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #a78bfa; // Morado más claro al pasar el mouse
+  }
+}
+  }
+
+  /* Botón para agregar género */
+  .btn-add-genre {
+    display: block;
+    margin: 1.5rem auto 0;
+    background-color: #6d28d9;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #a78bfa;
+    }
+  }
+
+  @media (max-width: 700px) {
+    padding: 1rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .genres-container {
+      padding: 1rem;
+    }
+  }
+}
+
+.genre-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #d8b4fe;
+    border-radius: 8px;
+    background-color: #faf5ff;
+    color: #4c1d95;
+    outline: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #6d28d9;
+      box-shadow: 0 0 5px rgba(109, 40, 217, 0.3);
+    }
+  }
+
+  textarea {
+    resize: none;
+    min-height: 80px;
+  }
+
+  button {
+    align-self: flex-start;
+    background-color: #6d28d9;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #a78bfa;
+    }
+  }
+}

@@ -3,7 +3,13 @@ import Home from "../pages/home";
 import LoginPage from "../pages/login";
 import RegisterPage from "../pages/register";
 import AppContainer from "../components/AppContainer";
-import CrearResena from "../pages/crearResena"; // 👈 corregido: debe ser "../pages", no "./pages"
+import CrearResena from "../pages/crearResena";
+import GenresPage from "../pages/genre";
+import TitleGenresPage from "../pages/titleGenre";
+import TitleDetailPage from "../pages/titleDetail";
+import CreditsPage from "../pages/credits";
+import PersonsPage from "../pages/person";
+import TitlesPage from "../pages/titles";
 
 export default function AppRoutes() {
   return (
@@ -27,7 +33,31 @@ export default function AppRoutes() {
           </AppContainer>
         }
       />
+      <Route
+        path="/titles/manage"
+        element={
+          <AppContainer>
+            <TitlesPage />
+          </AppContainer>
+        }
+      />
+      <Route
+        path="/person"
+        element={
+          <AppContainer>
+            <PersonsPage />
+          </AppContainer>
+        }
+      />
 
+      <Route
+        path="/titles/:titleId/credits"
+        element={
+          <AppContainer>
+            <CreditsPage />
+          </AppContainer>
+        }
+      />
       <Route
         path="/register"
         element={
@@ -36,6 +66,36 @@ export default function AppRoutes() {
           </AppContainer>
         }
       />
+
+
+      {/* ✅ Página para géneros generales */}
+      <Route
+        path="/genres"
+        element={
+          <AppContainer>
+            <GenresPage />
+          </AppContainer>
+        }
+      />
+
+      {/* ✅ Página para géneros asociados a un título */}
+      <Route
+        path="/titles/:titleId/genres"
+        element={
+          <AppContainer>
+            <TitleGenresPage />
+          </AppContainer>
+        }
+      />
+      <Route
+  path="/titles/:titleId"
+  element={
+    <AppContainer>
+      <TitleDetailPage />
+    </AppContainer>
+  }
+/>
+
 
       {/* ✅ Nueva ruta para crear reseña */}
       <Route

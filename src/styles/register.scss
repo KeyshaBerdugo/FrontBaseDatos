@@ -4,33 +4,38 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: 'Poppins', sans-serif;
 
-  // Hace que el contenido se centre en pantalla (debajo del header)
+  // Centrado del contenido
   .register-content {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 1; // ocupa todo el espacio restante debajo del toolbar
+    flex: 1;
     padding: 2rem;
   }
 
   .register-card {
-    background-color: #ede9fe;
+    background-color: #fff; // Fondo blanco para contraste
     padding: 2rem;
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
     text-align: center;
+    animation: fadeIn 0.6s ease-in-out;
 
     h2 {
       color: #4c1d95;
+      font-size: 1.8rem;
       margin-bottom: 0.5rem;
+      font-weight: 700;
     }
 
     p {
       color: #6b21a8;
       margin-bottom: 1.5rem;
+      font-size: 1rem;
     }
 
     .custom-input {
@@ -44,18 +49,26 @@
         --border-color: #a78bfa;
         --color: #4c1d95;
         font-size: 1rem;
+        transition: box-shadow 0.3s ease;
+
+        &:focus {
+          box-shadow: 0 0 8px rgba(167, 139, 250, 0.6);
+        }
       }
     }
 
     .btn-register {
-      --background: #a78bfa;
+      --background: #6d28d9;
       --color: #fff;
       --border-radius: 8px;
       font-weight: bold;
-      transition: 0.3s;
+      padding: 0.8rem;
+      font-size: 1rem;
+      transition: transform 0.3s ease, background-color 0.3s ease;
 
       &:hover {
-        --background: #c4b5fd;
+        --background: #4c1d95;
+        transform: scale(1.05);
       }
     }
   }
@@ -64,9 +77,31 @@
     --background: #6d28d9;
     --color: #fff;
     border-bottom: 2px solid #a78bfa;
+    font-size: 1.2rem;
+    font-weight: bold;
   }
 
-  ion-title {
-    font-weight: bold;
+  // Animación para la tarjeta
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // Responsive
+  @media (max-width: 480px) {
+    .register-card {
+      padding: 1.5rem;
+      max-width: 90%;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
   }
 }

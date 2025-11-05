@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  IonToast
+} from "@ionic/react";
 import "../styles/resena.scss";
 
 export default function CrearReseña() {
   const navigate = useNavigate();
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const obraId = params.get("obraId") || "";
+  
+const obra = location.state?.obra;
+const obraId = obra?.Id_Title || "";
 
   const [email, setEmail] = useState("");
   const [calificacion, setCalificacion] = useState(5);
@@ -16,9 +20,8 @@ export default function CrearReseña() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  const validarEmail = (correo: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
-  };
+  // Función de validación de email
+  const validarEmail = (correo: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,25 +38,25 @@ export default function CrearReseña() {
     }
 
     const data = {
-      Id_Title: obraId,
-      Email: email,
-      Rating: calificacion,
-      Status: status,
-      Spoiler: spoiler,
-      Comment: comentario,
-      Date_Created: new Date().toISOString(),
+      email,
+      idTitle: obraId,
+      rating: calificacion,
+      status,
+      spoiler,
+      comment: comentario,
+      dateCreated: new Date().toISOString(),
     };
 
     try {
-      const response = await fetch("/api/reviews", {
+      const response = await fetch("http://localhost:8080/api/reviews", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
       if (!response.ok) {
-        const resData = await response.json();
-        throw new Error(resData.error || "Error al enviar la reseña.");
+        const resData = await response.json().catch(() => ({ message: response.statusText }));
+        throw new Error(resData.message || "Error al enviar la reseña.");
       }
 
       setSuccess(true);
@@ -108,17 +111,15 @@ export default function CrearReseña() {
             placeholder="Escribe tu opinión sobre la obra..."
           />
 
-          
-<div className="checkbox-group">
-  <input
-    type="checkbox"
-    id="spoiler"
-    checked={spoiler}
-    onChange={(e) => setSpoiler(e.target.checked)}
-  />
-  <label htmlFor="spoiler">Contiene spoilers</label>
-</div>
-
+          <div className="checkbox-group">
+            <input
+              type="checkbox"
+              id="spoiler"
+              checked={spoiler}
+              onChange={(e) => setSpoiler(e.target.checked)}
+            />
+            <label htmlFor="spoiler">Contiene spoilers</label>
+          </div>
 
           <div className="botones">
             <button type="submit">Publicar reseña</button>
@@ -128,8 +129,21 @@ export default function CrearReseña() {
           </div>
         </form>
 
-        {success && <p className="success-msg">✅ Reseña publicada con éxito</p>}
-        {error && <p className="error-msg">❌ {error}</p>}
+        {/* Toasts para éxito y error */}
+        <IonToast
+          isOpen={success}
+          message="✅ Reseña publicada con éxito"
+          duration={1500}
+          color="success"
+          onDidDismiss={() => setSuccess(false)}
+        />
+        <IonToast
+          isOpen={!!error}
+          message={`❌ ${error}`}
+          duration={2000}
+          color="danger"
+          onDidDismiss={() => setError("")}
+        />
       </div>
     </div>
   );

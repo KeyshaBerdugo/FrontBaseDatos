@@ -15,14 +15,29 @@ const Home: React.FC = () => {
   const [tipo, setTipo] = useState("");
   const navigate = useNavigate();
 
+  const isLoggedIn = !!localStorage.getItem("auth_token");
+  const username = localStorage.getItem("user_name");
+
   useEffect(() => {
-    fetch("http://localhost:8080/api/titles")
+    fetch("http://localhost:8081/api/titles")
       .then((res) => res.json())
-      .then((data) => setObras(data))
+      .then((data) => {
+        const mappedData = data.map((item: any) => ({
+          Id_Title: item.idTitle,
+          Name_Title: item.nameTitle,
+          Title_Kind: item.titleKind,
+          Synopsis: item.synopsis,
+        }));
+        setObras(mappedData);
+      })
       .catch((err) => console.error("Error al cargar títulos:", err));
   }, []);
 
-  // Mapa de imágenes por Id_Title
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/home", { replace: true });
+  };
+
   const imagenes: Record<string, string> = {
     "CIEN-WORK": "https://www.lacoladerata.co/wp-content/uploads/2018/07/CienA%C3%B1osDeSoledad.jpg",
     "LOTR-WORK": "https://www.cnet.com/a/img/resize/12a21371ce304a21373e8344f7254fcd6914bb65/hub/2014/12/02/99323142-89a5-4788-bef1-c2e697aea2fb/lotr-fellowship-ring-frodo-elijah-wood.jpg?auto=webp&width=1200",
@@ -33,14 +48,36 @@ const Home: React.FC = () => {
     "ATMVENTANA-WORK": "https://i0.wp.com/www.kibit.cl/wp-content/uploads/2019/10/a-trav%C3%A9s-de-mi-ventana-e1571965965615.jpg?resize=1536%2C1269&ssl=1",
   };
 
-  // Filtrado por búsqueda y tipo
-  const filteredObras = obras.filter((obra) =>
-    obra.Name_Title.toLowerCase().includes(search.toLowerCase()) &&
-    (tipo ? obra.Title_Kind === tipo : true)
+  const filteredObras = obras.filter(
+    (obra) =>
+      obra.Name_Title.toLowerCase().includes(search.toLowerCase()) &&
+      (tipo ? obra.Title_Kind === tipo : true)
   );
 
   return (
     <div className="home font-[Poppins]">
+      {/* BARRA SUPERIOR */}
+      <header className="top-bar">
+        <div className="logo" onClick={() => navigate("/")}>📖 Mi Biblioteca</div>
+        <nav className="nav-buttons">
+          {isLoggedIn ? (
+            <>
+              <span style={{ marginRight: "10px" }}>Hola, {username}</span>
+              <button onClick={handleLogout}>Logout</button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => navigate("/login")}>Iniciar sesión</button>
+              <button onClick={() => navigate("/register")}>Registrarse</button>
+            </>
+          )}
+          <button onClick={() => navigate("/reseñas")}>Reseñas</button>
+          <button onClick={() => navigate("/genres")}>Géneros</button>
+          <button onClick={() => navigate("/person")}>Personas</button>
+          <button onClick={() => navigate("/titles/manage")}>Gestionar títulos</button>
+        </nav>
+      </header>
+
       {/* HERO */}
       <section className="hero">
         <h1>Explora, opina y comparte lecturas</h1>
@@ -66,26 +103,40 @@ const Home: React.FC = () => {
 
       {/* Obras */}
       <section className="obras">
-        <h2>📚 Obras destacadas</h2>
-        <div className="grid">
-          {filteredObras.map((obra) => (
-            <div key={obra.Id_Title} className="obra-card">
-              <img src={imagenes[obra.Id_Title]} alt={obra.Name_Title} />
-              <div className="info">
-                <h3>{obra.Name_Title}</h3>
-                <p><strong>Tipo:</strong> {obra.Title_Kind}</p>
-                <p className="synopsis">{obra.Synopsis}</p>
-                <button
-                  className="btn-ver-reseñas"
-                  onClick={() => navigate("/crear-resena", { state: { obra } })}
-                >
-                  Crear reseña
-                </button>
-              </div>
-            </div>
-          ))}
+  <h2>📚 Obras destacadas</h2>
+  <div className="grid">
+    {filteredObras.map((obra) => (
+      <div key={obra.Id_Title} className="obra-card">
+        <img src={imagenes[obra.Id_Title]} alt={obra.Name_Title} />
+        <div className="info">
+          <h3>{obra.Name_Title}</h3>
+          <p><strong>Tipo:</strong> {obra.Title_Kind}</p>
+          <p className="synopsis">{obra.Synopsis}</p>
+          <button
+            className="btn-ver-reseñas"
+            onClick={() => navigate("/crear-resena", { state: { obra } })}
+          >
+            Crear reseña
+          </button>
+          <button
+            className="btn-ver-generos"
+            onClick={() => navigate(`/titles/${obra.Id_Title}/genres`)}
+          >
+            Ver géneros
+          </button>
+          
+<button
+  className="btn-ver-detalle"
+  onClick={() => navigate(`/titles/${obra.Id_Title}`)}
+>
+  Ver detalle
+</button>
+
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</section>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useMemo, useRef, useEffect } from "react";
 import {
   IonPage,
@@ -15,7 +14,7 @@ import {
   IonToast,
 } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
-import "../styles/login.scss"; // Nuevo archivo para estilos
+import "../styles/login.scss";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -49,6 +48,7 @@ export default function LoginPage() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setTouched({ email: true, pwd: true });
+
     if (!formValid) {
       setAutoFocusInvalid(true);
       return;
@@ -58,13 +58,27 @@ export default function LoginPage() {
       setLoading(true);
       setError(null);
 
-      // Simulación login
-      await new Promise((r) => setTimeout(r, 600));
+      const res = await fetch("http://localhost:8081/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: pwd }),
+      });
+
+      if (!res.ok) {
+        const errorMsg = await res.text();
+        throw new Error(errorMsg);
+      }
+
+      const user = await res.json();
+
       localStorage.setItem("auth_token", "demo-token");
+      localStorage.setItem("user_email", user.email);
+      localStorage.setItem("user_name", user.username);
+
       setSuccess(true);
-      setTimeout(() => navigate("/", { replace: true }), 900);
-    } catch {
-      setError("Error al iniciar sesión");
+      setTimeout(() => navigate("/home", { replace: true }), 900);
+    } catch (err: any) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -131,6 +145,14 @@ export default function LoginPage() {
                   disabled={!formValid || loading}
                 >
                   {loading ? <IonSpinner name="dots" /> : "Entrar"}
+                </IonButton>
+                <IonButton
+                  expand="block"
+                  color="medium"
+                  onClick={() => navigate("/home")}
+                  style={{ marginTop: "10px" }}
+                >
+                  Volver a Home
                 </IonButton>
               </div>
 
